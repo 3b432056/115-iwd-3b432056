@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3b432056 張鳳麟 - 個人介紹</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts 字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            /* 網頁整體背景設定為溫潤的淺薄荷綠 */
+            background-color: #e2f0d9;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- 主要卡片容器：採用現代感毛玻璃/純白半透明風格，搭配陰影 -->
+    <div class="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden border border-white/40 p-8 sm:p-10 transition-all duration-300 hover:shadow-2xl">
+        
+        <!-- 裝飾性頂部標籤列 -->
+        <div class="flex justify-between items-center mb-8">
+            <span class="text-xs font-semibold px-3 py-1 rounded-full text-[#be0016] bg-[#e8c9ff]/60 tracking-wider">
+                PERSONAL PROFILE
+            </span>
+            <div class="flex space-x-1.5">
+                <div class="w-3 h-3 rounded-full bg-[#be0016]"></div>
+                <div class="w-3 h-3 rounded-full bg-[#e8c9ff]"></div>
+                <div class="w-3 h-3 rounded-full bg-[#a3d9a5]"></div>
+            </div>
+        </div>
+
+        <!-- 大頭貼區塊：酒紅色 #be0016 的圓形佔位，路徑抓 avatar.png -->
+        <div class="flex justify-center mb-8">
+            <div class="relative group">
+                <!-- 外圈裝飾光暈效果，使用搭配色 #e8c9ff -->
+                <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-[#be0016] to-[#e8c9ff] opacity-70 blur group-hover:opacity-100 transition duration-300"></div>
+                
+                <!-- 大頭貼圖片/佔位圓形 -->
+                <div class="relative w-36 h-36 rounded-full bg-[#be0016] flex items-center justify-center overflow-hidden shadow-inner border-4 border-white">
+                    <img src="avatar.png" 
+                         alt="張鳳麟的大頭貼" 
+                         class="w-full h-full object-cover"
+                         onerror="this.onerror=null; this.src='https://placehold.co/150x150/be0016/ffffff?text=Avatar';">
+                </div>
+            </div>
+        </div>
+
+        <!-- 姓名標題區塊 -->
+        <div class="text-center mb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight">
+                3b432056 張鳳麟
+            </h1>
+            <div class="w-12 h-1 bg-[#be0016] mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <!-- 自我介紹文字區塊 -->
+        <div class="bg-[#e8c9ff]/30 rounded-2xl p-5 border border-[#e8c9ff]">
+            <p class="text-gray-700 text-center text-sm sm:text-base leading-relaxed font-medium">
+                能不出門就不出門<br>
+                能不吃飯就不吃飯<br>
+                懶得要死的大學生
+            </p>
+        </div>
+
+        <!-- 底部互動小裝飾 -->
+        <div class="mt-8 text-center">
+            <span class="text-xs text-gray-500 font-light">
+                Interactive Web Design Course &copy; 2026
+            </span>
+        </div>
+
+    </div>
+
+</body>
+</html>
