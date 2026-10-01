@@ -13,6 +13,8 @@
       --card-bg: #ffffff;       /* 卡片白色背景 */
       --text-main: #2b2b2b;
       --text-muted: #555555;
+      --disabled-bg: #888888;   /* 停用灰色 */
+      --error-color: #d32f2f;   /* 錯誤提示紅字 */
     }
 
     * {
@@ -21,7 +23,7 @@
       padding: 0;
     }
 
-    /* 將全域字型指定為 FangSong (仿宋體) */
+    /* 全域字型指定為 FangSong (仿宋體) */
     body {
       font-family: "FangSong", "仿宋", "STFangsong", "Songti TC", serif;
       background-color: var(--bg-mint);
@@ -72,7 +74,7 @@
       text-decoration: underline;
     }
 
-    /* 語意化結構：Main 主內容區 (預設為 Flexbox 橫向排列、置中、16px 間距) */
+    /* 語意化結構：Main 主內容區 (Flexbox 橫向排列、置中、16px 間距) */
     main {
       flex: 1;
       display: flex;
@@ -203,6 +205,23 @@
       box-shadow: 0 0 0 3px rgba(190, 0, 22, 0.15);
     }
 
+    /* Email 驗證錯誤時的輸入框樣式 */
+    input.input-error {
+      border-color: var(--error-color) !important;
+      background-color: #fff9f9;
+      box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15) !important;
+    }
+
+    /* 錯誤訊息紅字提示 */
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: none;             /* 預設隱藏 */
+      margin-top: 0.2rem;
+    }
+
+    /* 送出按鈕樣式 */
     .btn-submit {
       font-family: inherit;
       background-color: var(--primary-color);
@@ -215,16 +234,25 @@
       cursor: pointer;
       margin-top: 0.5rem;
       letter-spacing: 2px;
-      transition: opacity 0.2s ease, transform 0.1s ease;
+      transition: all 0.3s ease;
     }
 
-    .btn-submit:hover {
+    .btn-submit:hover:not(:disabled) {
       opacity: 0.92;
       transform: translateY(-1px);
     }
 
-    .btn-submit:active {
+    .btn-submit:active:not(:disabled) {
       transform: translateY(0);
+    }
+
+    /* 按鈕點擊後停用樣式 (轉灰、禁止點擊) */
+    .btn-submit:disabled {
+      background-color: var(--disabled-bg);
+      color: #eaeaea;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     /* 語意化結構：Footer */
@@ -238,18 +266,16 @@
       letter-spacing: 1px;
     }
 
-    /* ==============================================
-       Media Query 核心條件：螢幕寬度小於 768px
-       ============================================== */
+    /* Media Query：小於 768px 改為直向堆疊 */
     @media (max-width: 768px) {
       main {
-        flex-direction: column;    /* 改為直向堆疊排列 */
-        align-items: center;       /* 水平置中對齊 */
-        padding: 1.5rem 1rem;      /* 手機端兩側縮小 padding 增加閱讀範圍 */
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 1rem;
       }
 
       .card {
-        width: 100%;               /* 滿版呈現 */
+        width: 100%;
       }
     }
   </style>
@@ -267,7 +293,7 @@
     </nav>
   </header>
 
-  <!-- 2. Main 主內容區塊 (Flexbox 排列與響應式斷點) -->
+  <!-- 2. Main 主內容區塊 -->
   <main>
     <!-- 左側：個人介紹 -->
     <article id="about" class="card profile-card">
@@ -281,18 +307,18 @@
     <!-- 右側：活動報名表單 -->
     <section id="register" class="card form-card">
       <h2>活動報名表單</h2>
-      <form action="#" method="POST" onsubmit="event.preventDefault(); alert('報名成功！');">
-        
+      <form id="signup-form" novalidate>
         <!-- 姓名欄位 (必填) -->
         <div class="form-group">
           <label for="user-name">姓名 <span class="required">*</span></label>
           <input type="text" id="user-name" name="userName" placeholder="請輸入姓名" required>
         </div>
 
-        <!-- Email 欄位 (必填) -->
+        <!-- Email 欄位 (必填，含即時紅字錯誤提示) -->
         <div class="form-group">
           <label for="user-email">Email <span class="required">*</span></label>
           <input type="email" id="user-email" name="userEmail" placeholder="example@mail.com" required>
+          <span id="email-error" class="error-message">請輸入有效的電子郵件格式（例如：user@example.com）</span>
         </div>
 
         <!-- 場次欄位 (下拉選單) -->
@@ -305,7 +331,8 @@
           </select>
         </div>
 
-        <button type="submit" class="btn-submit">送出報名</button>
+        <!-- 送出按鈕 -->
+        <button type="submit" id="submit-btn" class="btn-submit">送出報名</button>
       </form>
     </section>
   </main>
@@ -314,6 +341,78 @@
   <footer>
     <p>&copy; 2026 張鳳麟. 互動式網頁設計課程作業.</p>
   </footer>
+
+  <!-- 4. JavaScript 即時驗證與互動邏輯 -->
+  <script>
+    const form = document.getElementById('signup-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const emailInput = document.getElementById('user-email');
+    const emailError = document.getElementById('email-error');
+    const nameInput = document.getElementById('user-name');
+
+    // 電子郵件格式正規表達式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // 即時驗證 Email 函式
+    function validateEmail() {
+      const emailValue = emailInput.value.trim();
+
+      // 如果欄位是空的，先不提示格式錯誤（點送出時由必填邏輯檢查）
+      if (emailValue === '') {
+        emailError.style.display = 'none';
+        emailInput.classList.remove('input-error');
+        return false;
+      }
+
+      // 檢查格式是否符合正規表達式
+      if (!emailRegex.test(emailValue)) {
+        // 格式錯誤：立即彈出紅字提示並改變輸入框外框
+        emailError.style.display = 'block';
+        emailInput.classList.add('input-error');
+        return false;
+      } else {
+        // 格式正確：紅字提示立刻消失
+        emailError.style.display = 'none';
+        emailInput.classList.remove('input-error');
+        return true;
+      }
+    }
+
+    // 監聽 input 事件：使用者每鍵入或刪除一個字元時即時驗證
+    emailInput.addEventListener('input', validateEmail);
+
+    // 表單送出事件監聽
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // 阻止預設跳頁
+
+      const isEmailValid = validateEmail();
+
+      // 檢查姓名必填
+      if (nameInput.value.trim() === '') {
+        alert('請填寫姓名！');
+        nameInput.focus();
+        return;
+      }
+
+      // 檢查 Email 必填與格式
+      if (emailInput.value.trim() === '' || !isEmailValid) {
+        emailError.style.display = 'block';
+        emailInput.classList.add('input-error');
+        emailInput.focus();
+        return;
+      }
+
+      // 驗證全數通過後：
+      // 1. 將按鈕文字修改為「已送出」
+      submitBtn.textContent = '已送出';
+
+      // 2. 停用按鈕（觸發 CSS :disabled 轉灰且無法再點）
+      submitBtn.disabled = true;
+
+      // 3. 提示成功
+      alert('報名表單已成功送出！');
+    });
+  </script>
 
 </body>
 </html>
