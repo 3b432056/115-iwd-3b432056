@@ -1,148 +1,319 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3b432056 張鳳麟 - 個人介紹與活動報名</title>
-    <!-- 引入 Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google Fonts 字體 -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            /* 淺薄荷綠背景 */
-            background-color: #d4efdf;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>個人介紹與活動報名</title>
+  <style>
+    /* 全域設定與主題色彩 */
+    :root {
+      --bg-mint: #e2f5ee;       /* 淺薄荷綠背景 */
+      --primary-color: #be0016; /* 酒紅色主題 */
+      --accent-color: #e8c9ff;  /* 搭配淺粉紫 */
+      --card-bg: #ffffff;       /* 卡片白色背景 */
+      --text-main: #2b2b2b;
+      --text-muted: #555555;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 將全域字型指定為 FangSong (仿宋體) */
+    body {
+      font-family: "FangSong", "仿宋", "STFangsong", "Songti TC", serif;
+      background-color: var(--bg-mint);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      letter-spacing: 0.5px;
+    }
+
+    /* 語意化結構：Header & Nav */
+    header {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      padding: 1.2rem 2rem;
+      box-shadow: 0 4px 12px rgba(190, 0, 22, 0.15);
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    nav {
+      margin-top: 0.6rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* 語意化結構：Main 主內容區 (預設為 Flexbox 橫向排列、置中、16px 間距) */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;        /* 預設橫向排成一列 */
+      justify-content: center;    /* 水平置中對齊 */
+      align-items: stretch;       /* 等高排列 */
+      gap: 16px;                  /* 卡片間距留 16px */
+      padding: 3rem 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* 卡片通用設計 */
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 2.2rem;
+      flex: 1;
+      box-shadow: 0 10px 25px rgba(190, 0, 22, 0.08);
+      border: 1px solid rgba(190, 0, 22, 0.12);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(190, 0, 22, 0.12);
+    }
+
+    /* 左側：個人介紹卡片 */
+    .profile-card {
+      align-items: center;
+      text-align: center;
+    }
+
+    /* 酒紅色佔位圓形頭貼 */
+    .avatar-wrapper {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      border: 4px solid var(--accent-color);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 14px rgba(190, 0, 22, 0.25);
+    }
+
+    .avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-name {
+      font-size: 1.45rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .profile-bio {
+      font-size: 1.05rem;
+      color: #3d2338;
+      background-color: var(--accent-color);
+      padding: 1.2rem;
+      border-radius: 12px;
+      margin-top: auto;
+      width: 100%;
+      font-weight: 600;
+    }
+
+    /* 右側：活動報名表單卡片 */
+    .form-card h2 {
+      font-size: 1.45rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      text-align: left;
+    }
+
+    label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .required {
+      color: var(--primary-color);
+      margin-left: 2px;
+      font-weight: bold;
+    }
+
+    input, select {
+      font-family: inherit; /* 繼承 FangSong 仿宋體 */
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #d9d9d9;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      background-color: #fafafa;
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary-color);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(190, 0, 22, 0.15);
+    }
+
+    .btn-submit {
+      font-family: inherit;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      padding: 0.85rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      letter-spacing: 2px;
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    /* 語意化結構：Footer */
+    footer {
+      background-color: #242424;
+      color: #d1d1d1;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.95rem;
+      margin-top: auto;
+      letter-spacing: 1px;
+    }
+
+    /* ==============================================
+       Media Query 核心條件：螢幕寬度小於 768px
+       ============================================== */
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;    /* 改為直向堆疊排列 */
+        align-items: center;       /* 水平置中對齊 */
+        padding: 1.5rem 1rem;      /* 手機端兩側縮小 padding 增加閱讀範圍 */
+      }
+
+      .card {
+        width: 100%;               /* 滿版呈現 */
+      }
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between items-center p-4 sm:p-6">
+<body>
 
-    <!-- 網頁頂部 Header 區塊 -->
-    <header class="w-full max-w-lg text-center py-4">
-        <span class="text-xs font-bold tracking-widest text-[#be0016] bg-[#e8c9ff] px-3.5 py-1.5 rounded-full shadow-sm">
-            INTERACTIVE WEB DESIGN
-        </span>
-    </header>
-
-    <!-- 導覽列 Nav 區塊 -->
-    <nav class="w-full max-w-lg mb-4" aria-label="主導覽">
-        <ul class="flex justify-center space-x-6 text-sm font-medium text-gray-700">
-            <li><a href="#about" class="hover:text-[#be0016] transition-colors">關於我</a></li>
-            <li><a href="#register" class="hover:text-[#be0016] transition-colors">活動報名</a></li>
-            <li><a href="#contact" class="hover:text-[#be0016] transition-colors">聯絡資訊</a></li>
-        </ul>
+  <!-- 1. Header 與 Nav 區塊 -->
+  <header>
+    <h1>個人專題頁面</h1>
+    <nav>
+      <ul>
+        <li><a href="#about">關於我</a></li>
+        <li><a href="#register">活動報名</a></li>
+      </ul>
     </nav>
+  </header>
 
-    <!-- 主要內容 Main 區塊 -->
-    <main class="w-full max-w-lg space-y-6 my-auto">
+  <!-- 2. Main 主內容區塊 (Flexbox 排列與響應式斷點) -->
+  <main>
+    <!-- 左側：個人介紹 -->
+    <article id="about" class="card profile-card">
+      <div class="avatar-wrapper">
+        <img src="avatar.png" alt="個人頭貼" onerror="this.style.display='none'">
+      </div>
+      <h2 class="profile-name">3b432056 張鳳麟</h2>
+      <p class="profile-bio">能不出門就不出門 能不吃飯就不吃飯 懶得要死的大學生</p>
+    </article>
+
+    <!-- 右側：活動報名表單 -->
+    <section id="register" class="card form-card">
+      <h2>活動報名表單</h2>
+      <form action="#" method="POST" onsubmit="event.preventDefault(); alert('報名成功！');">
         
-        <!-- 個人介紹卡片 -->
-        <article class="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden border border-white/50 p-8 sm:p-10" id="about">
-            
-            <!-- 大頭貼區塊 -->
-            <div class="flex justify-center mb-8" id="profile">
-                <div class="relative group">
-                    <!-- 外圈裝飾光暈，使用搭配色 #e8c9ff -->
-                    <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-[#be0016] to-[#e8c9ff] opacity-70 blur group-hover:opacity-100 transition duration-300"></div>
-                    
-                    <!-- 大頭貼圖片/佔位圓形 -->
-                    <div class="relative w-36 h-36 rounded-full bg-[#be0016] flex items-center justify-center overflow-hidden shadow-inner border-4 border-white">
-                        <img src="avatar.png" 
-                             alt="張鳳麟的大頭貼" 
-                             class="w-full h-full object-cover"
-                             onerror="this.onerror=null; this.src='https://placehold.co/150x150/be0016/ffffff?text=Avatar';">
-                    </div>
-                </div>
-            </div>
+        <!-- 姓名欄位 (必填) -->
+        <div class="form-group">
+          <label for="user-name">姓名 <span class="required">*</span></label>
+          <input type="text" id="user-name" name="userName" placeholder="請輸入姓名" required>
+        </div>
 
-            <!-- 姓名標題區塊 -->
-            <div class="text-center mb-6">
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight">
-                    3b432056 張鳳麟
-                </h1>
-                <div class="w-12 h-1 bg-[#be0016] mx-auto mt-3 rounded-full"></div>
-            </div>
+        <!-- Email 欄位 (必填) -->
+        <div class="form-group">
+          <label for="user-email">Email <span class="required">*</span></label>
+          <input type="email" id="user-email" name="userEmail" placeholder="example@mail.com" required>
+        </div>
 
-            <!-- 自我介紹文字區塊 -->
-            <section class="bg-[#e8c9ff]/30 rounded-2xl p-5 border border-[#e8c9ff]/60" aria-labelledby="intro-heading">
-                <h2 id="intro-heading" class="sr-only">自我介紹摘要</h2>
-                <p class="text-gray-700 text-center text-sm sm:text-base leading-relaxed font-medium">
-                    能不出門就不出門<br>
-                    能不吃飯就不吃飯<br>
-                    懶得要死的大學生
-                </p>
-            </section>
-        </article>
+        <!-- 場次欄位 (下拉選單) -->
+        <div class="form-group">
+          <label for="event-session">報名場次</label>
+          <select id="event-session" name="eventSession">
+            <option value="session-1">第一場：前端設計入門與 AI 應用</option>
+            <option value="session-2">第二場：Flexbox 快速排版心法</option>
+            <option value="session-3">第三場：互動式網頁實作工作坊</option>
+          </select>
+        </div>
 
-        <!-- 活動報名表單區塊 -->
-        <section class="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden border border-white/50 p-8 sm:p-10" id="register">
-            <div class="text-center mb-6">
-                <h2 class="text-xl sm:text-2xl font-bold text-gray-800">活動線上報名表單</h2>
-                <p class="text-xs text-gray-500 mt-1">請填寫下方資訊完成報名手續</p>
-                <div class="w-8 h-1 bg-[#be0016] mx-auto mt-2 rounded-full"></div>
-            </div>
+        <button type="submit" class="btn-submit">送出報名</button>
+      </form>
+    </section>
+  </main>
 
-            <form action="#" method="POST" class="space-y-4">
-                <!-- 姓名欄位 -->
-                <div>
-                    <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">
-                        姓名 <span class="text-[#be0016]">*</span>
-                    </label>
-                    <input type="text" 
-                           id="fullName" 
-                           name="fullName" 
-                           required 
-                           placeholder="請輸入您的姓名"
-                           class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#be0016] focus:border-[#be0016] outline-none transition text-sm bg-gray-50/50">
-                </div>
-
-                <!-- Email 欄位 -->
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-                        電子郵件 (Email) <span class="text-[#be0016]">*</span>
-                    </label>
-                    <input type="email" 
-                           id="email" 
-                           name="email" 
-                           required 
-                           placeholder="example@domain.com"
-                           class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#be0016] focus:border-[#be0016] outline-none transition text-sm bg-gray-50/50">
-                </div>
-
-                <!-- 報名場次下拉選單 -->
-                <div>
-                    <label for="session" class="block text-sm font-medium text-gray-700 mb-1">
-                        報名場次
-                    </label>
-                    <select id="session" 
-                            name="session" 
-                            class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#be0016] focus:border-[#be0016] outline-none transition text-sm bg-gray-50/50 cursor-pointer">
-                        <option value="" disabled selected>-- 請選擇參加場次 --</option>
-                        <option value="session1">第一場：居家耍廢美學座談會 (06/10)</option>
-                        <option value="session2">第二場：躺平與前端互動設計實務 (06/17)</option>
-                        <option value="session3">第三場：零社交的高效網頁開發 (06/24)</option>
-                    </select>
-                </div>
-
-                <!-- 提交按鈕 -->
-                <div class="pt-2">
-                    <button type="submit" 
-                            class="w-full py-3 px-4 rounded-xl text-white font-medium bg-[#be0016] hover:bg-[#a00012] transition-colors shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#be0016] focus:ring-offset-2">
-                        確認送出報名
-                    </button>
-                </div>
-            </form>
-        </section>
-
-    </main>
-
-    <!-- 網頁底部 Footer 區塊 -->
-    <footer class="w-full max-w-lg text-center py-6" id="contact">
-        <p class="text-xs text-gray-600 font-light">
-            &copy; 2026 3b432056 張鳳麟. All Rights Reserved.
-        </p>
-    </footer>
+  <!-- 3. Footer 頁尾區塊 -->
+  <footer>
+    <p>&copy; 2026 張鳳麟. 互動式網頁設計課程作業.</p>
+  </footer>
 
 </body>
 </html>
